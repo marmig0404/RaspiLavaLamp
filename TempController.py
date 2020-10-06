@@ -10,23 +10,18 @@ class TempController:
     device_folder = glob.glob(base_dir + '28*')[0]
     device_file = device_folder + '/w1_slave'
     cycle_time = 1  # cycle time in seconds
-    channel = 10  # pin
     frequency = 1000  # pwm frequency
 
-    def __init__(self, target, p=1, i=1, d=1):
+    def __init__(self, target, heater_pin, sensor_pin, p=1, i=1, d=1):
         self.pid = PID(p, i, d, setpoint=target)
         self.pid.sample_time = self.cycle_time
+        self.heater_pin = heater_pin
+        # self.sensor_pin = sensor_pin
 
-    def update_controller(self):
+    def update(self):
         value = self.read_temp()
         control = self.pid(value)
         self.apply_control(control)
-
-    def read_temp_raw(self):
-        f = open(self.device_file, 'r')
-        lines = f.readlines()
-        f.close()
-        return lines
 
     def read_temp(self):
         lines = self.read_temp_raw()
@@ -37,11 +32,16 @@ class TempController:
         if equals_pos != -1:
             temp_string = lines[1][equals_pos + 2:]
             temp_c = float(temp_string) / 1000.0
-            temp_f = temp_c * 9.0 / 5.0 + 32.0
-            return temp_c, temp_f
+            return temp_c
+
+    def read_temp_raw(self):
+        f = open(self.device_file, 'r')
+        lines = f.readlines()
+        f.close()
+        return lines
 
     def apply_control(self, control):
-        heater = GPIO.PWM(self.channel, self.frequency)
+        heater = GPIO.PWM(self.heater_pin, self.frequency)
         heater.start(control)
         time.sleep(self.cycle_time)
         heater.stop()

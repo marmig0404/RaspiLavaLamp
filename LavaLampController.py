@@ -1,19 +1,30 @@
+import socketserver
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from threading import Thread
+from typing import Tuple
 
-from LavaLampController.LightController import LightController
-from LavaLampController.TempController import TempController
+from LightController import LightController
+from TempController import TempController
 
 host_name = 'localhost'
 host_port = 8000
+target_temp = 40
+heater_pin = 10
+sensor_pin = 17
+light_pin = 18
 
 
 class LampServer(BaseHTTPRequestHandler):
-    post_mem = {"heater": "off",
-                "lamp": "off",
-                "color": "#FF0000"}
 
-    light_controller = LightController()
-    temp_controller = TempController(40)
+    def __init__(self, request: bytes, client_address: Tuple[str, int], server: socketserver.BaseServer) -> None:
+        super().__init__(request, client_address, server)
+        self.heater_thread_stop = False
+        self.heater_thread = Thread(target=self.run_heater, args=(lambda: self.heater_thread_stop,))
+        self.light_controller = LightController(light_pin)  # create light controller
+        self.temp_controller = TempController(target_temp, heater_pin, sensor_pin)  # create temp controller at 40C
+        self.post_mem = {"heater": "off",
+                         "lamp": "off",
+                         "color": "#FF0000"}
 
     def do_HEAD(self):
         self.send_response(200)
@@ -71,22 +82,29 @@ class LampServer(BaseHTTPRequestHandler):
     def change_heater_state(self):
         state = self.post_mem.get('heater')
         if state == "On":
-            print('Heater on')
+            self.heater_thread_stop = False
+            self.heater_thread.start()
         else:
-            print('Heater off')
+            self.heater_thread_stop = True
 
     def change_lamp_state(self):
         state = self.post_mem.get('lamp')
         if state == "On":
-            print('Lamp on')
+            self.light_controller.turn_on()
         else:
-            print('Lamp off')
+            self.light_controller.turn_off()
 
     def change_color_state(self):
         state = self.post_mem.get('color')
         state = state.replace('%23', '#')  # make standard hex color code
         self.post_mem['color'] = state
-        print('Color:' + state)
+        self.light_controller.change_color(state)
+
+    def run_heater(self, stop):
+        while True:
+            self.temp_controller.update()
+            if stop():
+                break
 
 
 http_server = HTTPServer((host_name, host_port), LampServer)
