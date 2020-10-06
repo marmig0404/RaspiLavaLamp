@@ -1,7 +1,7 @@
 import glob
 import time
 
-from RPi.GPIO import GPIO
+from RPi.GPIO as GPIO
 from simple_pid import PID
 
 
