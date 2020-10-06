@@ -18,6 +18,10 @@ class TempController:
         self.heater_pin = heater_pin
         # self.sensor_pin = sensor_pin
 
+    def __del__(self):
+        GPIO.cleanup(self.heater_pin)
+        # GPIO.cleanup(self.sensor_pin)
+
     def update(self):
         value = self.read_temp()
         control = self.pid(value)
@@ -42,6 +46,6 @@ class TempController:
 
     def apply_control(self, control):
         heater = GPIO.PWM(self.heater_pin, self.frequency)
-        heater.start(control)
+        heater.start(max(min(int(control), 100), 0))
         time.sleep(self.cycle_time)
         heater.stop()

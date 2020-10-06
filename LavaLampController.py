@@ -42,7 +42,7 @@ class LampServer(BaseHTTPRequestHandler):
             <html>
             <body style="width:960px; margin: 20px auto;">
             <h1>Lava Lamp Controller</h1>
-            <p>Current Lamp temperature is {}</p>
+            <p>Current Lamp temperature is {}C</p>
             <form action="/" method="POST">
                 Turn Heater :
                 <input type="submit" name="heater" value="On">
@@ -58,7 +58,7 @@ class LampServer(BaseHTTPRequestHandler):
             </html>
         '''
         self.do_HEAD()
-        self.wfile.write(html.format("69", self.post_mem.get('color')).encode("utf-8"))
+        self.wfile.write(html.format(self.temp_controller.read_temp(), self.post_mem.get('color')).encode("utf-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])  # Get the size of data
