@@ -1,0 +1,9 @@
+Adafruit-Blinka==5.4.1
+adafruit-circuitpython-neopixel==6.0.0
+adafruit-circuitpython-pypixelbuf==2.1.2
+Adafruit-PlatformDetect==2.17.0
+Adafruit-PureIO==1.1.6
+pyftdi==0.52.0
+pyserial==3.4
+pyusb==1.1.0
+simple-pid==0.2.4
