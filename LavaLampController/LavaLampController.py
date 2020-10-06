@@ -16,9 +16,6 @@ class LampServer(BaseHTTPRequestHandler):
     temp_controller = TempController(40)
 
     def do_HEAD(self):
-        """ do_HEAD() can be tested use curl command
-            'curl -I http://server-ip-address:port'
-        """
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
@@ -30,9 +27,6 @@ class LampServer(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        """ do_GET() can be tested using curl command
-            'curl http://server-ip-address:port'
-        """
         html = '''
             <html>
             <body style="width:960px; margin: 20px auto;">
@@ -56,9 +50,6 @@ class LampServer(BaseHTTPRequestHandler):
         self.wfile.write(html.format("69", self.post_mem.get('color')).encode("utf-8"))
 
     def do_POST(self):
-        """ do_POST() can be tested using curl command
-            'curl -d "submit=On" http://server-ip-address:port'
-        """
         content_length = int(self.headers['Content-Length'])  # Get the size of data
         post_data = self.rfile.read(content_length).decode("utf-8")  # Get the data
         post_data = post_data.split("&")
