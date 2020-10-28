@@ -13,11 +13,11 @@ class TempController:
     frequency = 1000  # pwm frequency
 
     def __init__(self, target, heater_pin, sensor_pin, p=1, i=1, d=1):
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(self.heater_pin, GPIO.OUT)
         self.pid = PID(p, i, d, setpoint=target)
         self.pid.sample_time = self.cycle_time
         self.heater_pin = heater_pin
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.heater_pin, GPIO.OUT)
         # self.sensor_pin = sensor_pin
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
