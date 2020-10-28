@@ -15,6 +15,10 @@ sensor_pin = 17
 light_pin = board.D18
 num_lights = 12
 
+post_mem = {"heater": "off",
+                         "lamp": "off",
+                         "color": "#FF0000"}
+
 
 class LampServer(BaseHTTPRequestHandler):
 
@@ -23,9 +27,6 @@ class LampServer(BaseHTTPRequestHandler):
         self.heater_thread = Thread(target=self.run_heater, args=(lambda: self.heater_thread_stop,))
         self.light_controller = LightController(light_pin, num_lights)  # create light controller
         self.temp_controller = TempController(target_temp, heater_pin, sensor_pin)  # create temp controller at 40C
-        self.post_mem = {"heater": "off",
-                         "lamp": "off",
-                         "color": "#FF0000"}
         super().__init__(request, client_address, server)
 
 
@@ -62,8 +63,8 @@ class LampServer(BaseHTTPRequestHandler):
         '''
         self.do_HEAD()
         print('doing get')
-        print(self.post_mem)
-        self.wfile.write(html.format(self.temp_controller.read_temp(), self.post_mem.get('color')).encode("utf-8"))
+        print(post_mem)
+        self.wfile.write(html.format(self.temp_controller.read_temp(), post_mem.get('color')).encode("utf-8"))
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])  # Get the size of data
@@ -71,9 +72,9 @@ class LampServer(BaseHTTPRequestHandler):
         post_data = post_data.split("&")
         for data in post_data:
             split_data = data.split("=")
-            self.post_mem[split_data[0]] = split_data[1]
+            post_mem[split_data[0]] = split_data[1]
         print('post mem:')
-        print(self.post_mem)
+        print(post_mem)
         self.do_action()
         self._redirect('/')  # Redirect back to the root url
 
@@ -83,11 +84,11 @@ class LampServer(BaseHTTPRequestHandler):
             "lamp": self.change_lamp_state(),
             "color": self.change_color_state(),
         }
-        for pair in self.post_mem:
+        for pair in post_mem:
             return action_switch.get(pair[0])
 
     def change_heater_state(self):
-        state = self.post_mem.get('heater')
+        state = post_mem.get('heater')
         if state == "On":
             self.heater_thread_stop = False
             self.heater_thread.start()
@@ -95,16 +96,16 @@ class LampServer(BaseHTTPRequestHandler):
             self.heater_thread_stop = True
 
     def change_lamp_state(self):
-        state = self.post_mem.get('lamp')
+        state = post_mem.get('lamp')
         if state == "On":
             self.light_controller.turn_on()
         else:
             self.light_controller.turn_off()
 
     def change_color_state(self):
-        state = self.post_mem.get('color')
+        state = post_mem.get('color')
         state = state.replace('%23', '#')  # make standard hex color code
-        self.post_mem['color'] = state
+        post_mem['color'] = state
         self.light_controller.change_color(state)
 
     def run_heater(self, stop):
