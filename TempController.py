@@ -5,7 +5,7 @@ import RPi.GPIO as GPIO
 from simple_pid import PID
 
 class TempController:
-    
+
     base_dir = '/sys/bus/w1/devices/'
     device_folder = glob.glob(base_dir + '28*')[0]
     device_file = device_folder + '/w1_slave'
@@ -13,10 +13,15 @@ class TempController:
     frequency = 1000  # pwm frequency
 
     def __init__(self, target, heater_pin, sensor_pin, p=1, i=1, d=1):
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.heater_pin, GPIO.OUT)
         self.pid = PID(p, i, d, setpoint=target)
         self.pid.sample_time = self.cycle_time
         self.heater_pin = heater_pin
         # self.sensor_pin = sensor_pin
+
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        GPIO.cleanup()
 
     def __del__(self):
         GPIO.cleanup(self.heater_pin)
