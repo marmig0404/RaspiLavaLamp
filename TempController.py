@@ -16,7 +16,6 @@ class TempController:
         self.pid = PID(p, i, d, setpoint=target)
         self.pid.sample_time = self.cycle_time
         self.heater_pin = heater_pin
-        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.heater_pin, GPIO.OUT)
         # self.sensor_pin = sensor_pin
 
