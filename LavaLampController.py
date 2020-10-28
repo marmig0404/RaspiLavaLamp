@@ -13,6 +13,7 @@ target_temp = 40
 heater_pin = 10
 sensor_pin = 17
 light_pin = board.D18
+num_lights = 12
 
 
 class LampServer(BaseHTTPRequestHandler):
@@ -20,7 +21,7 @@ class LampServer(BaseHTTPRequestHandler):
     def __init__(self, request: bytes, client_address: Tuple[str, int], server: socketserver.BaseServer) -> None:
         self.heater_thread_stop = False
         self.heater_thread = Thread(target=self.run_heater, args=(lambda: self.heater_thread_stop,))
-        self.light_controller = LightController(light_pin)  # create light controller
+        self.light_controller = LightController(light_pin, num_lights)  # create light controller
         self.temp_controller = TempController(target_temp, heater_pin, sensor_pin)  # create temp controller at 40C
         self.post_mem = {"heater": "off",
                          "lamp": "off",
