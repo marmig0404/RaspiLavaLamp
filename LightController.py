@@ -24,5 +24,5 @@ class LightController:
 
     @staticmethod
     def rgb_from_hex(hex_color):
-        hex_color.replace("#", '')
+        hex_color = hex_color.replace("#", '')
         return tuple(int(hex_color[i:i + 2], 16) for i in (0, 2, 4))
