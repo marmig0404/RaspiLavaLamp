@@ -61,6 +61,8 @@ class LampServer(BaseHTTPRequestHandler):
             </html>
         '''
         self.do_HEAD()
+        print('doing get')
+        print(self.post_mem)
         self.wfile.write(html.format(self.temp_controller.read_temp(), self.post_mem.get('color')).encode("utf-8"))
 
     def do_POST(self):

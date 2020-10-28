@@ -10,9 +10,9 @@ class LightController:
         self.num_lights = num_lights
         self.lights = neopixel.NeoPixel(pin, num_lights, auto_write=False)
 
-    def turn_on(self):
-        print('turning on')
+    def turn_on(self):       
         [r, g, b] = self.rgb_from_hex(self.color_state)
+        print('turning on' + [r,g,b])
         for i in range(self.num_lights):
             self.lights[i] = (r,g,b)
         self.lights.show()
