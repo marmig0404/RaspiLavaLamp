@@ -3,8 +3,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 from typing import Tuple
 
-import LightController
-import TempController
+from LightController import LightController
+from TempController import TempController
 
 host_name = '192.168.1.45' # change based on DHCP
 host_port = 8000
