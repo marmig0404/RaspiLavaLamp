@@ -11,17 +11,20 @@ class LightController:
         self.lights = neopixel.NeoPixel(pin, num_lights, auto_write=False)
 
     def turn_on(self):
+        print('turning on')
         [r, g, b] = self.rgb_from_hex(self.color_state)
         for i in range(self.num_lights):
             self.lights[i] = (r,g,b)
         self.lights.show()
 
     def turn_off(self):
+        print('turning off')
         for i in range(self.num_lights):
             self.lights[i] = (0,0,0)
         self.lights.show()
 
     def change_color(self, color):
+        print('changing color')
         self.color_state = color
 
     @staticmethod
