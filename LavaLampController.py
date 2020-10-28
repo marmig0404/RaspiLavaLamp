@@ -70,6 +70,8 @@ class LampServer(BaseHTTPRequestHandler):
         for data in post_data:
             split_data = data.split("=")
             self.post_mem[split_data[0]] = split_data[1]
+        print('post mem:')
+        print(self.post_mem)
         self.do_action()
         self._redirect('/')  # Redirect back to the root url
 
