@@ -16,6 +16,12 @@ light_pin = 18
 
 class LampServer(BaseHTTPRequestHandler):
 
+    heater_thread_stop = None
+    heater_thread = None
+    light_controller = None
+    temp_controller = None
+    post_mem = None
+
     def __init__(self, request: bytes, client_address: Tuple[str, int], server: socketserver.BaseServer) -> None:
         super().__init__(request, client_address, server)
         self.heater_thread_stop = False
