@@ -7,7 +7,7 @@ class LightController:
     color_state = '#000000'
 
     def __init__(self, pin):
-        if pin is int:
+        if isinstance(pin, int):
             pin = getattr(board, 'D' + pin)
         self.lights = neopixel.NeoPixel(pin, 12, auto_write=False)
 
