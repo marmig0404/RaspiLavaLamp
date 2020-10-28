@@ -1,4 +1,5 @@
 import socketserver
+import board
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 from typing import Tuple
@@ -11,7 +12,7 @@ host_port = 8000
 target_temp = 40
 heater_pin = 10
 sensor_pin = 17
-light_pin = 18
+light_pin = board.D18
 
 
 class LampServer(BaseHTTPRequestHandler):
