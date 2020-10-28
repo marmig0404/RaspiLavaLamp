@@ -16,14 +16,7 @@ light_pin = 18
 
 class LampServer(BaseHTTPRequestHandler):
 
-    heater_thread_stop = None
-    heater_thread = None
-    light_controller = None
-    temp_controller = None
-    post_mem = None
-
     def __init__(self, request: bytes, client_address: Tuple[str, int], server: socketserver.BaseServer) -> None:
-        super().__init__(request, client_address, server)
         self.heater_thread_stop = False
         self.heater_thread = Thread(target=self.run_heater, args=(lambda: self.heater_thread_stop,))
         self.light_controller = LightController(light_pin)  # create light controller
@@ -31,6 +24,8 @@ class LampServer(BaseHTTPRequestHandler):
         self.post_mem = {"heater": "off",
                          "lamp": "off",
                          "color": "#FF0000"}
+        super().__init__(request, client_address, server)
+
 
     def do_HEAD(self):
         self.send_response(200)
