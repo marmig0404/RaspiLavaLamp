@@ -3,10 +3,10 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 from typing import Tuple
 
-from LightController import LightController
-from TempController import TempController
+import LightController
+import TempController
 
-host_name = 'localhost'
+host_name = '192.168.1.45' # change based on DHCP
 host_port = 8000
 target_temp = 40
 heater_pin = 10
