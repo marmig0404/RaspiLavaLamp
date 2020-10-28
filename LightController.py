@@ -14,10 +14,12 @@ class LightController:
         [r, g, b] = self.rgb_from_hex(self.color_state)
         for i in range(self.num_lights):
             self.lights[i] = (r,g,b)
+        self.lights.show()
 
     def turn_off(self):
         for i in range(self.num_lights):
             self.lights[i] = (0,0,0)
+        self.lights.show()
 
     def change_color(self, color):
         self.color_state = color
