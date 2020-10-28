@@ -1,4 +1,5 @@
 import neopixel
+import board
 
 class LightController:
 
@@ -6,6 +7,8 @@ class LightController:
     color_state = '#000000'
 
     def __init__(self, pin):
+        if pin is int:
+            pin = getattr(board, 'D' + pin)
         self.lights = neopixel.NeoPixel(pin, 12, auto_write=False)
 
     def turn_on(self):
