@@ -20,13 +20,16 @@ post_mem = {"heater": "off",
                          "color": "#FF0000"}
 
 
+light_controller = LightController(light_pin, num_lights)  # create light controller
+temp_controller = TempController(target_temp, heater_pin, sensor_pin)  # create temp 
+
 class LampServer(BaseHTTPRequestHandler):
 
     def __init__(self, request: bytes, client_address: Tuple[str, int], server: socketserver.BaseServer) -> None:
         self.heater_thread_stop = False
         self.heater_thread = Thread(target=self.run_heater, args=(lambda: self.heater_thread_stop,))
-        self.light_controller = LightController(light_pin, num_lights)  # create light controller
-        self.temp_controller = TempController(target_temp, heater_pin, sensor_pin)  # create temp controller at 40C
+        self.light_controller = light_controller
+        self.temp_controller = temp_controller
         super().__init__(request, client_address, server)
 
 
