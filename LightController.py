@@ -12,7 +12,8 @@ class LightController:
 
     def turn_on(self):       
         [r, g, b] = self.rgb_from_hex(self.color_state)
-        print('turning on, ' + r + ',' + g + ',' + b)
+        print('turning on:')
+        print([r,g,b])
         for i in range(self.num_lights):
             self.lights[i] = (r,g,b)
         self.lights.show()
