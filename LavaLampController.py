@@ -109,7 +109,7 @@ class LampServer(BaseHTTPRequestHandler):
         print('applying color change')
         print(state)
         self.light_controller.change_color(state)
-        self.light_controller.turn_on()
+        self.change_lamp_state()
 
     def run_heater(self, stop):
         while True:
