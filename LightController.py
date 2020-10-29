@@ -29,13 +29,12 @@ class LightController:
             self.light_state = False
 
     def change_color(self, color):
-        print('changing color:')
-        print(color)
         self.color_state = color
-        [r, g, b] = self.rgb_from_hex(self.color_state)
-        for i in range(self.num_lights):
-            self.lights[i] = (r,g,b)
-        self.lights.show()
+        if(self.light_state):
+            [r, g, b] = self.rgb_from_hex(self.color_state)
+            for i in range(self.num_lights):
+                self.lights[i] = (r,g,b)
+            self.lights.show()
 
     @staticmethod
     def rgb_from_hex(hex_color):
