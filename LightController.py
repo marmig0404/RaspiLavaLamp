@@ -25,7 +25,8 @@ class LightController:
         self.lights.show()
 
     def change_color(self, color):
-        print('changing color')
+        print('changing color:')
+        print(color)
         self.color_state = color
 
     @staticmethod
