@@ -10,23 +10,21 @@ class LightController:
         self.color_state = '#000000'
 
     def turn_on(self):
-        if(not self.light_state):
-            self.light_state = True       
-            [r, g, b] = self.rgb_from_hex(self.color_state)
-            print('turning on:')
-            print(self.color_state)
-            print([r,g,b])
-            for i in range(self.num_lights):
-                self.lights[i] = (r,g,b)
-            self.lights.show()
+        self.light_state = True       
+        [r, g, b] = self.rgb_from_hex(self.color_state)
+        print('turning on:')
+        print(self.color_state)
+        print([r,g,b])
+        for i in range(self.num_lights):
+            self.lights[i] = (r,g,b)
+        self.lights.show()
 
     def turn_off(self):
-        if(self.light_state):
-            print('turning off')
-            for i in range(self.num_lights):
-                self.lights[i] = (0,0,0)
-            self.lights.show()
-            self.light_state = False
+        print('turning off')
+        for i in range(self.num_lights):
+            self.lights[i] = (0,0,0)
+        self.lights.show()
+        self.light_state = False
 
     def change_color(self, color):
         self.color_state = color
