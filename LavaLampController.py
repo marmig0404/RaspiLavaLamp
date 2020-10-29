@@ -62,8 +62,6 @@ class LampServer(BaseHTTPRequestHandler):
             </html>
         '''
         self.do_HEAD()
-        print('doing get')
-        print(post_mem)
         self.wfile.write(html.format(self.temp_controller.read_temp(), post_mem.get('color')).encode("utf-8"))
 
     def do_POST(self):
@@ -73,8 +71,6 @@ class LampServer(BaseHTTPRequestHandler):
         for data in post_data:
             split_data = data.split("=")
             post_mem[split_data[0]] = split_data[1]
-        print('post mem:')
-        print(post_mem)
         self.do_action()
         self._redirect('/')  # Redirect back to the root url
 
