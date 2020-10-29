@@ -28,6 +28,8 @@ class LightController:
         print('changing color:')
         print(color)
         self.color_state = color
+        print('confirm change')
+        print(self.color_state)
 
     @staticmethod
     def rgb_from_hex(hex_color):
