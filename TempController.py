@@ -30,6 +30,8 @@ class TempController:
         value = self.read_temp()
         control = self.pid(value)
         self.apply_control(control)
+        print('applying control:')
+        print(control)
 
     def read_temp(self):
         lines = self.read_temp_raw()
@@ -40,6 +42,8 @@ class TempController:
         if equals_pos != -1:
             temp_string = lines[1][equals_pos + 2:]
             temp_c = float(temp_string) / 1000.0
+            print('temp is:')
+            print(temp_c)
             return temp_c
 
     def read_temp_raw(self):
