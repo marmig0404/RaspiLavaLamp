@@ -2,13 +2,12 @@ import neopixel
 
 class LightController:
 
-    light_state = False
-    color_state = '#000000'
-
     def __init__(self, pin, num_lights):
         self.pin = pin
         self.num_lights = num_lights
         self.lights = neopixel.NeoPixel(pin, num_lights, auto_write=False)
+        self.light_state = False
+        self.color_state = '#000000'
 
     def turn_on(self):       
         [r, g, b] = self.rgb_from_hex(self.color_state)
