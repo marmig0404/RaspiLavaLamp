@@ -106,6 +106,8 @@ class LampServer(BaseHTTPRequestHandler):
         state = post_mem.get('color')
         state = state.replace('%23', '#')  # make standard hex color code
         post_mem['color'] = state
+        print('applying color change')
+        print(state)
         self.light_controller.change_color(state)
 
     def run_heater(self, stop):
