@@ -14,7 +14,6 @@ class TempController:
     def __init__(self, target, heater_pin, sensor_pin, p=1, i=1, d=1):
         self.target = target
         self.heater_pin = heater_pin
-        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.heater_pin, GPIO.OUT)
         self.heater = GPIO.PWM(self.heater_pin, self.frequency)
         self.heater.start(0)
