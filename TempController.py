@@ -14,17 +14,23 @@ class TempController:
     def __init__(self, target, heater_pin, sensor_pin, p=1, i=1, d=1):
         self.target = target
         self.heater_pin = heater_pin
-        GPIO.setup(self.heater_pin, GPIO.OUT)
-        self.heater = GPIO.PWM(self.heater_pin, self.frequency)
-        self.heater.start(0)
-        # self.sensor_pin = sensor_pin
+        self.init_heater()
 
     def __exit__(self, exception_type, exception_value, exception_traceback):
         GPIO.cleanup()
 
     def __del__(self):
+        self.remove_heater()
+        
+
+    def init_heater(self):
+        GPIO.setup(self.heater_pin, GPIO.OUT)
+        self.heater = GPIO.PWM(self.heater_pin, self.frequency)
+        self.heater.start(0)
+
+    def remove_heater(self):
+        self.heater.stop()
         GPIO.cleanup(self.heater_pin)
-        # GPIO.cleanup(self.sensor_pin)
 
     def update(self):
         temp = self.read_temp()
@@ -53,8 +59,10 @@ class TempController:
             return temp_c
 
     def read_temp_raw(self):
+        self.remove_heater()
         f = open(self.device_file, 'r')
         lines = f.readlines()
         f.close()
+        self.init_heater()
         return lines
 
