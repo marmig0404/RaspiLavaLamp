@@ -45,10 +45,8 @@ class TempController:
             return temp_c
 
     def read_temp_raw(self):
-        self.remove_heater()
         f = open(self.device_file, 'r')
         lines = f.readlines()
         f.close()
-        self.init_heater()
         return lines
 
