@@ -10,7 +10,7 @@ from TempController import TempController
 
 host_name = '192.168.1.45' # change based on DHCP
 host_port = 8000
-target_temp = 40
+target_temp = 50
 heater_pin = 13
 sensor_pin = 17
 light_pin = board.D18
