@@ -42,6 +42,7 @@ class TempController:
 
     def read_temp(self):
         lines = self.read_temp_raw()
+        print(lines)
         while lines[0].strip()[-3:] != 'YES':
             time.sleep(0.2)
             lines = self.read_temp_raw()
