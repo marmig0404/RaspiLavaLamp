@@ -26,7 +26,7 @@ class TempController:
             self.heater.off()
         if temp < self.target :
             print('heating on')
-            self.heater.value = 100
+            self.heater.value = 1
             self.heater.on()
 
     def read_temp(self):
