@@ -11,7 +11,7 @@ from TempController import TempController
 host_name = '192.168.1.45' # change based on DHCP
 host_port = 8000
 target_temp = 40
-heater_pin = 10
+heater_pin = 23
 sensor_pin = 17
 light_pin = board.D18
 num_lights = 12
