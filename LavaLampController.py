@@ -3,6 +3,7 @@ import board
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
 from typing import Tuple
+from time import sleep
 
 from LightController import LightController
 from TempController import TempController
@@ -112,6 +113,7 @@ class LampServer(BaseHTTPRequestHandler):
     def run_heater(self, stop):
         while True:
             self.temp_controller.update()
+            sleep(10)
             if stop():
                 break
 
