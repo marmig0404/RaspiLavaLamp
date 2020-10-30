@@ -30,10 +30,10 @@ class TempController:
         temp = self.read_temp()
         print('temp is:')
         print(temp)
-        if temp < self.target :
+        if temp > self.target :
             print('not heating')
             self.heater.ChangeDutyCycle(0) 
-        if temp > self.target :
+        if temp < self.target :
             duty_cycle = ((temp-self.target)*3)+50
             if duty_cycle > 100 : duty_cycle = 100 
             print('heating at duty cycle:')
